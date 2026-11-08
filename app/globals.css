@@ -4,9 +4,47 @@
 
 :root {
   --kb-black: #000000;
-  --kb-yellow: #f6e6cb;
+  --kb-yellow: #f7e6d0;
   --kb-ease-cinematic: cubic-bezier(0.45, 0, 0.15, 1);
   --kb-ease-confident: cubic-bezier(0.65, 0, 0.35, 1);
+  --font-poppins: "Poppins", sans-serif;
+  --font-franklin: "Franklin Gothic", "Franklin Gothic Medium", sans-serif;
+  --font-bradhit: "Bradley Hand ITC", "Bradley Hand", cursive;
+  --scene2-yellow: #f5e633;
+  --scene3-cream: #fff8e8;
+  --scene3-navy: #1c2f6e;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/kill_bill/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/kill_bill/fonts/Poppins-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Franklin Gothic";
+  src: url("/kill_bill/fonts/FRAHV.TTF") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bradley Hand ITC";
+  src: url("/kill_bill/fonts/BRADHITC.TTF") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -45,6 +83,57 @@ body {
   opacity: 0;
   pointer-events: none;
   will-change: opacity;
+}
+
+.opening__scene-b-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  will-change: opacity;
+}
+
+.opening__chapter1-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  will-change: transform, opacity;
+  transform-origin: center bottom;
+}
+
+.opening__chapter1-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 100%,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.28) 42%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  will-change: opacity;
+}
+
+.opening__transition-bridge {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--kb-black);
+  will-change: opacity;
+}
+
+.scene-b--exiting {
+  overflow: hidden;
+}
+
+.scene-b--exiting .scene-b__letter {
+  pointer-events: none;
+}
+
+.scene-b--exiting .scene-b__title-track {
+  will-change: transform, opacity, filter;
 }
 
 /* ─── Scene A ─── */
@@ -205,7 +294,8 @@ body {
   padding: 0 clamp(2px, 0.4vw, 8px);
   font-family: var(--font-title), "Bebas Neue", Impact, sans-serif;
   font-weight: 400;
-  line-height: 0.58;
+  font-synthesis: none;
+  line-height: 0.86;
   letter-spacing: -0.085em;
   text-transform: uppercase;
   opacity: 1;
@@ -216,41 +306,88 @@ body {
   display: inline-flex;
   align-items: baseline;
   white-space: nowrap;
-  max-width: 100%;
-  transform: scaleY(1.32);
-  transform-origin: center center;
+  transform-origin: 50% 0%;
+  will-change: transform, opacity, filter;
 }
 
 .scene-b__letter {
   position: relative;
-  display: inline-block;
+  display: inline-grid;
+  vertical-align: top;
   cursor: default;
   user-select: none;
   will-change: transform, opacity;
-  --letter-stroke: 0.018em;
+  --letter-stroke: 0.06em;
 }
 
 .scene-b__letter:nth-child(5) {
   margin-left: 0.035em;
 }
 
-.scene-b__letter-glyph {
+.scene-b__letter-solid,
+.scene-b__letter-photo {
+  grid-area: 1 / 1;
   display: block;
-  color: var(--letter-color, var(--kb-yellow));
-  -webkit-text-fill-color: var(--letter-color, var(--kb-yellow));
+  line-height: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   -webkit-text-stroke: var(--letter-stroke) var(--letter-color, var(--kb-yellow));
   paint-order: stroke fill;
+}
+
+.scene-b__letter-solid {
+  color: var(--letter-color, var(--kb-yellow));
+  -webkit-text-fill-color: var(--letter-color, var(--kb-yellow));
+}
+
+.scene-b__letter-photo {
+  opacity: 0;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
 }
 
-.scene-b__letter--hovered .scene-b__letter-glyph {
-  -webkit-text-fill-color: transparent;
+.scene-b__letter--hovered .scene-b__letter-solid {
   color: transparent;
-  -webkit-text-stroke: var(--letter-stroke) transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-color: transparent;
+}
+
+.scene-b__letter--hovered .scene-b__letter-photo {
+  opacity: 1;
+}
+
+.scene-b__credit {
+  position: absolute;
+  bottom: clamp(28px, 5.5vh, 52px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 4.2vw, 56px);
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-credit), var(--font-metadata), "Courier New", monospace;
+  font-size: clamp(10px, 0.72vw, 12px);
+  font-weight: 700;
+  font-synthesis: none;
+  text-transform: uppercase;
+  color: #ded9d0;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.scene-b__credit span {
+  letter-spacing: 0.88em;
+  padding-right: 0.88em;
 }
 
 .sr-only {
@@ -268,5 +405,558 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* ─── Chapter 1 — scroll-scrub video ─── */
+
+.chapter1 {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+}
+
+.chapter1--embedded {
+  position: absolute;
+  inset: 0;
+}
+
+.chapter1__scroll-root {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chapter1__scroll-root--wheel {
+  overflow: hidden;
+}
+
+.chapter1__pin {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.chapter1__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.chapter1__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.chapter1__scroll-spacer {
+  width: 100%;
+  pointer-events: none;
+}
+
+.chapter1-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s linear, visibility 0.12s linear;
+}
+
+.chapter1-scene.scene1,
+.chapter1-scene.scene2,
+.chapter1-scene.scene3 {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: none;
+}
+
+/* ─── Scene 1 — Director badge ─── */
+
+.scene1__header {
+  position: absolute;
+  top: clamp(32px, 5.8vh, 64px);
+  left: clamp(16px, 2.8vw, 40px);
+  z-index: 3;
+  max-width: min(380px, 42vw);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.scene1__chapter {
+  margin: 0;
+  font-family: var(--font-poppins);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  line-height: 1.05;
+}
+
+.scene1__rule {
+  width: 100%;
+  max-width: clamp(132px, 17vw, 188px);
+  height: 2px;
+  margin: clamp(11px, 1.5vh, 16px) 0 clamp(14px, 2vh, 20px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.scene1__quote {
+  margin: 0;
+  font-family: var(--font-poppins);
+  font-size: clamp(0.78rem, 1.12vw, 0.92rem);
+  font-weight: 300;
+  line-height: 1.58;
+  letter-spacing: 0.004em;
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.scene1__drag-hint {
+  position: absolute;
+  left: clamp(24px, 4.6vw, 60px);
+  top: 44%;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-franklin);
+  font-size: clamp(6.2rem, 16vw, 12rem);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: none;
+  color: rgba(255, 240, 165, 0.76);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.scene1__card-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.scene1__card-stage--dragging {
+  z-index: 30;
+}
+
+.scene1__canvas-wrap {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  touch-action: none;
+  overflow: visible;
+}
+
+.scene1__canvas-wrap--dragging {
+  z-index: 30;
+}
+
+.scene1__canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.scene1-card__title {
+  margin: 0;
+  font-family: var(--font-scene1-serif), "Lora", "Times New Roman", serif;
+  font-size: clamp(13px, 1.25vw, 17px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #1a1410;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.chapter1-scene__placeholder {
+  margin: 0;
+  font-family: var(--font-metadata), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(12px, 1.2vw, 16px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ─── Scene 2 — Set life / image scroll ─── */
+
+.scene2 {
+  pointer-events: none;
+}
+
+.scene2__header {
+  position: absolute;
+  top: clamp(36px, 7vh, 72px);
+  left: 50%;
+  z-index: 4;
+  max-width: min(360px, 42vw);
+  text-align: left;
+  will-change: transform, opacity;
+}
+
+.scene2__chapter {
+  margin: 0;
+  font-family: var(--font-poppins);
+  font-size: clamp(1.1rem, 1.9vw, 1.65rem);
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.01em;
+  color: #2a0a0a;
+  line-height: 1.1;
+}
+
+.scene2__chapter-paren {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.scene2__intro {
+  margin: clamp(14px, 2.2vh, 22px) 0 0;
+  font-family: var(--font-bradhit);
+  font-size: clamp(1.35rem, 2.8vw, 2.35rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: #2a0a0a;
+}
+
+.scene2__scroll-stage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55vw;
+  max-width: none;
+  height: 100%;
+  z-index: 3;
+  will-change: transform, opacity;
+}
+
+.scene2__scroll-column {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene2__pillar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6.5%;
+  background: var(--scene2-yellow);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.scene2__pillar--left {
+  left: 0;
+}
+
+.scene2__pillar--right {
+  right: 0;
+}
+
+.scene2__perspective-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scene2__scroll-viewport {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  background: var(--scene2-yellow);
+  isolation: isolate;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.scene2__scroll-viewport--painted {
+  opacity: 1;
+}
+
+.scene2__scroll-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+
+.scene2__scroll-item {
+  position: relative;
+  flex-shrink: 0;
+  margin: 0 auto;
+  width: 100%;
+  height: var(--item-size, 240px);
+  contain: layout style paint;
+}
+
+.scene2__scroll-item::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: calc(var(--item-gap, 14px) * -0.5);
+  height: 2px;
+  transform: translateY(50%);
+  background: var(--scene2-yellow);
+  box-shadow: 0 0 0 1px var(--scene2-yellow);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scene2__scroll-item-strips {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene2__scroll-strip {
+  position: absolute;
+  overflow: hidden;
+  backface-visibility: hidden;
+  will-change: width, left, transform;
+}
+
+.scene2__scroll-strip-media {
+  position: absolute;
+  top: 0;
+  background-repeat: no-repeat;
+  background-position: center top;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ─── Scene 3 — Card + flowing menu ─── */
+
+.scene3 {
+  pointer-events: none;
+}
+
+.scene3__card {
+  position: absolute;
+  top: clamp(40px, 8vh, 88px);
+  left: 50%;
+  z-index: 4;
+  width: clamp(148px, 16vw, 210px);
+  padding: clamp(18px, 2.4vh, 28px) clamp(16px, 2vw, 24px) clamp(22px, 3vh, 34px);
+  border: clamp(3px, 0.45vw, 5px) solid var(--scene3-navy);
+  border-radius: clamp(18px, 2.4vw, 28px);
+  background: var(--scene3-cream);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  will-change: transform, opacity;
+}
+
+.scene3__card-title {
+  margin: 0 0 clamp(12px, 1.8vh, 18px);
+  font-family: var(--font-poppins);
+  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
+  font-weight: 700;
+  color: #2a0a0a;
+  line-height: 1.1;
+}
+
+.scene3__card-quote {
+  margin: 0;
+  font-family: var(--font-bradhit);
+  font-size: clamp(1.05rem, 1.8vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  color: #2a0a0a;
+}
+
+.scene3__menu-wrap {
+  position: absolute;
+  right: clamp(-80px, -4vw, -20px);
+  bottom: clamp(120px, 24vh, 240px);
+  z-index: 5;
+  transform: rotate(-26deg) scale(calc(var(--menu-enter-scale, 1) * 1.05));
+  transform-origin: 78% 62%;
+  pointer-events: auto;
+  will-change: transform, opacity;
+}
+
+.scene3__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: clamp(600px, 100vw, 780px);
+  min-width: clamp(600px, 100vw, 780px);
+}
+
+.scene3__menu-row {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--scene3-navy);
+  background: var(--scene3-cream);
+  transition: background 0.12s linear;
+}
+
+.scene3__menu-row:first-child {
+  border-top: 3px solid var(--scene3-navy);
+}
+
+.scene3__menu-row-inner {
+  position: relative;
+  padding: clamp(14px, 1.8vh, 20px) clamp(22px, 2.6vw, 34px);
+  min-height: clamp(52px, 6.8vh, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene3__menu-label {
+  font-family: var(--font-poppins);
+  font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+  font-weight: 700;
+  color: #111;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  transition: opacity 0.1s linear;
+}
+
+.scene3__menu-marquee {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(22px, 3vw, 40px);
+  padding: 0 clamp(22px, 2.6vw, 34px);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translateX(0);
+}
+
+.scene3__menu-marquee span {
+  font-family: var(--font-poppins);
+  font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+  font-weight: 700;
+  color: #fff;
+}
+
+.scene3__menu-row:hover {
+  background: var(--scene3-navy);
+}
+
+.scene3__menu-row:hover .scene3__menu-label {
+  opacity: 0;
+}
+
+.scene3__menu-row:hover .scene3__menu-marquee {
+  opacity: 1;
+  animation: scene3-marquee 4.5s linear infinite;
+}
+
+@keyframes scene3-marquee {
+  from {
+    transform: translate3d(12%, -6%, 0);
+  }
+  to {
+    transform: translate3d(-62%, 24%, 0);
+  }
+}
+
+.scene3__corner-image {
+  position: absolute;
+  right: clamp(0px, 0.5vw, 20px);
+  bottom: clamp(20px, 4vh, 48px);
+  width: clamp(240px, 36vw, 480px);
+  height: clamp(168px, 26vh, 320px);
+  z-index: 3;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.scene3__corner-img {
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 900px) {
+  .scene2__header {
+    left: clamp(20px, 5vw, 36px);
+    top: clamp(28px, 5vh, 48px);
+  }
+
+  .scene2__scroll-stage {
+    width: 55vw;
+  }
+
+  .scene3__card {
+    left: 58%;
+  }
+
+  .scene3__menu-wrap {
+    right: clamp(-56px, -5vw, -16px);
+    bottom: clamp(96px, 20vh, 180px);
+    --menu-mobile-scale: 0.96;
+    transform: rotate(-26deg) scale(calc(var(--menu-enter-scale, 1) * var(--menu-mobile-scale, 1)));
+  }
+
+  .scene3__menu {
+    width: clamp(360px, 72vw, 620px);
+    min-width: clamp(360px, 72vw, 620px);
+  }
+
+  .scene3__corner-image {
+    width: clamp(200px, 48vw, 360px);
+    height: clamp(140px, 28vw, 240px);
+    bottom: clamp(16px, 3vh, 36px);
+  }
+}
+
+@media (max-width: 600px) {
+  .scene2__scroll-stage {
+    width: 58vw;
+  }
+
+  .scene2__intro {
+    font-size: clamp(1.1rem, 6vw, 1.6rem);
+  }
+
+  .scene3__card {
+    left: 50%;
+    width: clamp(130px, 42vw, 180px);
+  }
+
+  .scene3__menu-wrap {
+    bottom: clamp(72px, 16vh, 140px);
+    --menu-mobile-scale: 0.92;
+  }
+
+  .scene3__menu {
+    width: clamp(300px, 88vw, 520px);
+    min-width: clamp(300px, 88vw, 520px);
+  }
+
+  .scene3__corner-image {
+    width: clamp(180px, 54vw, 300px);
+    height: clamp(124px, 32vw, 200px);
+    bottom: clamp(12px, 2.5vh, 28px);
   }
 }

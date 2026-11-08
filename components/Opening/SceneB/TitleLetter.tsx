@@ -5,6 +5,7 @@ import { forwardRef, useCallback, useState } from "react";
 interface TitleLetterProps {
   char: string;
   backgroundImage: string;
+  imagePosition?: string;
   enabled: boolean;
   onHoverStart: (x: number, y: number) => void;
   onHoverMove: (x: number, y: number) => void;
@@ -16,6 +17,7 @@ const TitleLetter = forwardRef<HTMLSpanElement, TitleLetterProps>(
     {
       char,
       backgroundImage,
+      imagePosition = "center 38%",
       enabled,
       onHoverStart,
       onHoverMove,
@@ -57,13 +59,15 @@ const TitleLetter = forwardRef<HTMLSpanElement, TitleLetterProps>(
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
+        <span className="scene-b__letter-solid" aria-hidden>
+          {char}
+        </span>
         <span
-          className="scene-b__letter-glyph"
-          style={
-            showImage
-              ? { backgroundImage: `url(${backgroundImage})` }
-              : undefined
-          }
+          className="scene-b__letter-photo"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundPosition: imagePosition,
+          }}
           aria-hidden
         >
           {char}

@@ -25,4 +25,16 @@ export const DURATION = {
   letterWaveSettle: 0.48,
   letterColorStagger: 0.075,
   letterColorShift: 0.14,
+  creditReveal: 0.7,
 } as const;
+
+/** Slight overshoot for Chapter1 spring entry. */
+export function easeOutBack(t: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+
+export function easeInCubic(t: number): number {
+  return t * t * t;
+}
